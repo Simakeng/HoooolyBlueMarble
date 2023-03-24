@@ -10,6 +10,10 @@
 let renderTargetCanvas;
 let glEnv;
 
+function hbm_get_gl() {
+    return glEnv;
+}
+
 function hbm_gl_clear_render_target() {
     let gl = glEnv;
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -18,7 +22,7 @@ function hbm_gl_clear_render_target() {
 
 function hbm_init_render_loop(canvas) {
     renderTargetCanvas = canvas;
-    glEnv = canvas.getContext("webgl");
+    glEnv = canvas.getContext("webgl2");
 
     if (!glEnv) {
         debug("Unable to initialize WebGL. Your browser, operating system, or hardware may not support WebGL.");
@@ -26,7 +30,8 @@ function hbm_init_render_loop(canvas) {
     }
 
     hbm_gl_clear_render_target();
-
+    let skybox = new HBMSkyBox();
+    skybox.render();
 }
 
 function hbm_create_gl_env(canvas) {
