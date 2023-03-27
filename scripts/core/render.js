@@ -28,10 +28,16 @@ function hbm_init_render_loop(canvas) {
         debug("Unable to initialize WebGL. Your browser, operating system, or hardware may not support WebGL.");
         return;
     }
-
+    function render_dummy() {
+        skybox.render();
+        requestAnimationFrame(render_dummy);
+     }
     hbm_gl_clear_render_target();
     let skybox = new HBMSkyBox();
-    skybox.render();
+    setTimeout(() => {
+        render_dummy();
+        
+    }, 100); 
 }
 
 function hbm_create_gl_env(canvas) {

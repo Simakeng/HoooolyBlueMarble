@@ -16,15 +16,17 @@ const HBM_SKYBOX_FS = 2;
 const HBM_SHADERS = {};
 
 HBM_SHADERS[HBM_SKYBOX_VS] = {
+    name: "skybox_vertex_shader",
     path: HBM_DEFAULT_VERTEX_SHADER,
     type: "VS",
     inputs: {
         position: "a_VertexPosition",
-        texture: "a_TexturePosition"
+        // texture: "a_TexturePosition"
     }
 };
 
 HBM_SHADERS[HBM_SKYBOX_FS] = {
+    name: "skybox_fragment_shader",
     path: HBM_DEFAULT_FRAGMENT_SHADER,
     type: "FS",
 }
@@ -73,7 +75,8 @@ function hbm_compile_shader(shader) {
 
     hbmCompiledShaders[shaderPath] = {
         compiled: compiledShader,
-        inputs: shader.inputs
+        inputs: shader.inputs,
+        name: shader.name
     };
 
     return hbmCompiledShaders[shaderPath];

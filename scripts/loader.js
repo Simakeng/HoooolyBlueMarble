@@ -23,6 +23,7 @@ function convert_url_according_to_env(url) {
 
 // script list
 const HOOOLY_BLUE_MARBLE_SCRIPTS = [
+  "scripts/utils/gl-matrix-min.js",
   "scripts/core/render-shader.js",
   "scripts/core/render-skybox.js",
   "scripts/core/render-target.js",

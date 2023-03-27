@@ -82,16 +82,28 @@ function hbm_mesh_bind_to_program(gl, mesh, program, shaders) {
 
         shaderInputNames.forEach(inputName => {
             if (!mesh.vertexData[inputName]) {
-                debug("mesh not have input: " + inputName + "")
+                debug("mesh not have input: " + inputName + " required by shader '"
+                    + shader.name + "'");
                 return;
             }
+            debug("input: " + inputName + " was bind to shader '"
+                + shader.name + "' at location: " + shader.inputs[inputName] + "");
+            
             let attribLocation = gl.getAttribLocation(program, shader.inputs[inputName]);
             let attribBuffer = mesh.vertexData[inputName];
-            let bufferSize = mesh.vertexData.count * 3;
+            const elementSize = 3;
 
-            gl.enableVertexAttribArray(attribLocation);
+            // how many bytes to get from one set of values to the next
+            // 0 = use type and numComponents above
+            const stride = 0;
+
+            // how many bytes inside the buffer to start from
+            const offset = 0;
+
             gl.bindBuffer(gl.ARRAY_BUFFER, attribBuffer);
-            gl.vertexAttribPointer(attribLocation, bufferSize, gl.FLOAT, false, 0, 0);
+            gl.vertexAttribPointer(attribLocation, elementSize,
+                gl.FLOAT, false, stride, offset);
+            gl.enableVertexAttribArray(attribLocation);
         });
     });
 

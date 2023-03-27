@@ -20,11 +20,19 @@ class HBMSkyBox {
 
     render() {
         let gl = hbm_get_gl();
+        gl.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
+        gl.clear(gl.COLOR_BUFFER_BIT);
 
-        gl.useProgram(this.program);
         hbm_mesh_bind_to_program(gl, this.mesh, this.program, [this.vs, this.fs])
 
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        gl.useProgram(this.program);
+
+        const offset = 0;
+        const vertexCount = this.mesh.vertexData.count;
+        gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
+        gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
+        gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
+        gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
     }
 }
 
@@ -37,17 +45,27 @@ function hbm_create_skybox_mesh() {
     mesh.meshType = "non-indexed";
 
     //   x     y     z
+    // let vertices = [
+    //     -1.0, 1.0, 0.5,
+    //     1.0, 1.0, 0.5,
+    //     -1.0, -1.0, 0.5,
+    //     -1.0, -1.0, 0.5,
+    //     1.0, 1.0, 0.5,
+    //     1.0, -1.0, 0.5,
+    // ]
+
     let vertices = [
-        -1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-        -1.0, -1.0, 1.0,
-        -1.0, -1.0, 1.0,
-        1.0, 1.0, 1.0,
-        1.0, -1.0, 1.0,
+        0.0, 0.0, 0.5,
+        1.0, 1.0, 0.5,
+        1.0, 0.0, 0.5,
+        1.0, 1.0, 0.5,
+        0.0, 0.0, 0.5,
+        1.0, 0.0, 0.5,
     ]
 
     mesh.vertexData.position =
         hbm_gl_create_array_buffer(gl, vertices);
 
+    mesh.vertexData.count = 6;
     return mesh;
 }
