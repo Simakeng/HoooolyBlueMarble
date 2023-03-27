@@ -15,21 +15,29 @@
 const HBM_RT_CANVAS_ID = "render-target-canvas";
 
 function register_window_resize_event() {
+
+    let timeoutId = 0;
+    let resizePending = false;
+
     window.addEventListener("resize", function () {
-        let container = document.getElementById("container");
-        let canvas = document.getElementById(HBM_RT_CANVAS_ID);
-
-        // get the pixel width and height of the container
-        let renderTargetHeight = container.clientHeight;
-        let renderTargetWidth = container.clientWidth;
-
-        canvas.width = renderTargetWidth;
-        canvas.height = renderTargetHeight;
-        // debug("window resize to: " + renderTargetWidth +
-        //     "x" + renderTargetHeight + "");
+        if (resizePending) {
+            this.clearTimeout(timeoutId);
+        }
+        resizePending = true;
+        timeoutId = setTimeout(hbm_resize_target_canvas, 10);
     });
 }
 
+function hbm_resize_target_canvas() {
+    const container = document.getElementById("container");
+    const canvas = document.getElementById(HBM_RT_CANVAS_ID);
+    const renderTargetHeight = container.clientHeight;
+    const renderTargetWidth = container.clientWidth;
+    canvas.width = renderTargetWidth;
+    canvas.height = renderTargetHeight;
+    debug("window resize to: " + renderTargetWidth +
+        "x" + renderTargetHeight + "");
+}
 
 function create_render_target_canvas() {
     let container = document.getElementById("container");
@@ -49,14 +57,9 @@ function create_render_target_canvas() {
     container.innerHTML = "";
     container.appendChild(canvas);
 
-    // get the pixel width and height of the container
-    let renderTargetHeight = container.clientHeight;
-    let renderTargetWidth = container.clientWidth;
-
-    canvas.width = renderTargetWidth;
-    canvas.height = renderTargetHeight;
-
     register_window_resize_event();
+
+    hbm_resize_target_canvas();
 
     return canvas;
 }
