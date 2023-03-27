@@ -30,42 +30,42 @@ class HBMSkyBox {
         const offset = 0;
         const vertexCount = this.mesh.vertexData.count;
         gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
-        gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
-        gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
-        gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
     }
 }
 
 
 
 function hbm_create_skybox_mesh() {
-    gl = hbm_get_gl();
-    mesh = hbm_create_mesh();
+    const gl = hbm_get_gl();
+    const mesh = hbm_get_static_mesh_template();
 
     mesh.meshType = "non-indexed";
 
     //   x     y     z
-    // let vertices = [
-    //     -1.0, 1.0, 0.5,
-    //     1.0, 1.0, 0.5,
-    //     -1.0, -1.0, 0.5,
-    //     -1.0, -1.0, 0.5,
-    //     1.0, 1.0, 0.5,
-    //     1.0, -1.0, 0.5,
-    // ]
+    let vertexPositions = [
+        -1.0, 1.0, 0.5,
+        1.0, 1.0, 0.5,
+        -1.0, -1.0, 0.5,
+        -1.0, -1.0, 0.5,
+        1.0, 1.0, 0.5,
+        1.0, -1.0, 0.5,
+    ]
 
-    let vertices = [
-        0.0, 0.0, 0.5,
-        1.0, 1.0, 0.5,
-        1.0, 0.0, 0.5,
-        1.0, 1.0, 0.5,
-        0.0, 0.0, 0.5,
-        1.0, 0.0, 0.5,
+    let texturePositions = [
+        0.0, 0.0,
+        1.0, 0.0,
+        0.0, 1.0,
+        0.0, 1.0,
+        1.0, 0.0,
+        1.0, 1.0,
     ]
 
     mesh.vertexData.position =
-        hbm_gl_create_array_buffer(gl, vertices);
-
+        hbm_gl_create_static_array_buffer(gl, vertexPositions, 3);
+    mesh.vertexData.texture =
+        hbm_gl_create_static_array_buffer(gl, texturePositions, 2);
+    mesh.textures.diffuse = 
+        hbm_gl_create_static_texture2d(gl, "/assets/textures/skybox/skybox_b.jpg")
     mesh.vertexData.count = 6;
     return mesh;
 }

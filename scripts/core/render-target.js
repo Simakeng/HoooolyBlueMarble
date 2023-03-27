@@ -20,11 +20,12 @@ function register_window_resize_event() {
     let resizePending = false;
 
     window.addEventListener("resize", function () {
+
         if (resizePending) {
             this.clearTimeout(timeoutId);
         }
         resizePending = true;
-        timeoutId = setTimeout(hbm_resize_target_canvas, 10);
+        timeoutId = setTimeout(hbm_resize_target_canvas, 200);
     });
 }
 
@@ -35,6 +36,9 @@ function hbm_resize_target_canvas() {
     const renderTargetWidth = container.clientWidth;
     canvas.width = renderTargetWidth;
     canvas.height = renderTargetHeight;
+    gl = hbm_get_gl()
+    if (gl)
+        gl.viewport(0, 0, renderTargetWidth, renderTargetHeight);
     debug("window resize to: " + renderTargetWidth +
         "x" + renderTargetHeight + "");
 }

@@ -20,8 +20,12 @@ HBM_SHADERS[HBM_SKYBOX_VS] = {
     path: HBM_DEFAULT_VERTEX_SHADER,
     type: "VS",
     inputs: {
-        position: "a_VertexPosition",
-        // texture: "a_TexturePosition"
+        position: {
+            binding: "a_VertexPosition"
+        },
+        texture: {
+            binding: "a_TexturePosition"
+        },
     }
 };
 
@@ -29,6 +33,12 @@ HBM_SHADERS[HBM_SKYBOX_FS] = {
     name: "skybox_fragment_shader",
     path: HBM_DEFAULT_FRAGMENT_SHADER,
     type: "FS",
+    inputs: {
+        diffuse: {
+            binding: "uSamplerDiffuse",
+            index: 0 
+        }
+    }
 }
 
 function hbm_get_shader(shader_name) {
@@ -60,7 +70,7 @@ function hbm_compile_shader(shader) {
     if (hbmCompiledShaders[shaderPath]) {
         return hbmCompiledShaders[shaderPath];
     }
-    
+
     const shaderSource = hbm_load_file(shaderPath);
     let compiledShader = gl.createShader(shaderType);
 
@@ -68,7 +78,7 @@ function hbm_compile_shader(shader) {
     gl.compileShader(compiledShader);
 
     if (!gl.getShaderParameter(compiledShader, gl.COMPILE_STATUS)) {
-        debug("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
+        debug("An error occurred compiling the shader '" + shader.path + "': \n" + gl.getShaderInfoLog(compiledShader));
         gl.deleteShader(compiledShader);
         return null;
     }

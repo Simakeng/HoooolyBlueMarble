@@ -2,19 +2,14 @@
 
 precision highp float;
 
-// out: texture coord
-// in lowp vec4 vVertexPosition;
-in vec4 v_color;
-// out: world position
-// in highp vec2 vTexturePosition;
+// in: texture coord
+in vec2 v_TexturePosition;
 
-// uniform sampler2D uSampler;
+// texture
+uniform sampler2D uSamplerDiffuse;
 
 out vec4 outColor;
 
 void main(void) {
-    // colorOut = texture(uSampler, vTexturePosition);
-    outColor.rgb = vec3(0.0, 1.0, 1.0);
-    // colorOut.rgb = vVertexPosition.xyz;
-    outColor.a = 1.0;
+    outColor = texture(uSamplerDiffuse, v_TexturePosition);
 }
