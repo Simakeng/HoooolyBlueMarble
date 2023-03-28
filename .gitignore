@@ -1,4 +1,8 @@
 .vscode
 
+# add for SVS Deep Star Maps 2020
+*.exr
+*.tif
+
 .*
 !.gitignore
