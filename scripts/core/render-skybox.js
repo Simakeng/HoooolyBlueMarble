@@ -40,15 +40,15 @@ function hbm_create_skybox_mesh() {
     const mesh = hbm_get_static_mesh_template();
 
     mesh.meshType = "non-indexed";
-
+    const z = 1;
     //   x     y     z
     let vertexPositions = [
-        -1.0, 1.0, 0.5,
-        1.0, 1.0, 0.5,
-        -1.0, -1.0, 0.5,
-        -1.0, -1.0, 0.5,
-        1.0, 1.0, 0.5,
-        1.0, -1.0, 0.5,
+        -1.0, 1.0, z,
+        1.0, 1.0, z,
+        -1.0, -1.0, z,
+        -1.0, -1.0, z,
+        1.0, 1.0, z,
+        1.0, -1.0, z,
     ]
 
     let texturePositions = [
@@ -66,6 +66,6 @@ function hbm_create_skybox_mesh() {
         hbm_gl_create_static_array_buffer(gl, texturePositions, 2);
     mesh.textures.diffuse = 
         hbm_gl_create_static_texture2d(gl, "/assets/textures/skybox/skybox_b.jpg")
-    mesh.vertexData.count = 6;
+    mesh.vertexData.count = 3;
     return mesh;
 }

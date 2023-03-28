@@ -13,8 +13,9 @@ out vec2 v_TexturePosition;
 
 void main() {
     vec4 uniformedPos = vec4(a_VertexPosition, 1.0);
-    // vec4 worldPos = uMatrix * uniformedPos;
-    vec4 worldPos = uniformedPos;
+    // vec4 worldPos = uniformedPos * uMatrix;
+    vec4 worldPos = uMatrix * uniformedPos;
+    // vec4 worldPos = uniformedPos;
     gl_Position = worldPos;
     v_TexturePosition = a_TexturePosition;
 }

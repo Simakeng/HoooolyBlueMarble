@@ -39,6 +39,9 @@ function hbm_resize_target_canvas() {
     gl = hbm_get_gl()
     if (gl)
         gl.viewport(0, 0, renderTargetWidth, renderTargetHeight);
+    const camera = hbm_get_main_camera();
+    camera.setResolution(renderTargetWidth, renderTargetHeight);
+
     debug("window resize to: " + renderTargetWidth +
         "x" + renderTargetHeight + "");
 }

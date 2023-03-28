@@ -114,9 +114,22 @@ function hbm_mesh_bind_to_program(gl, mesh, program, shaders) {
 
         const shaderInputNames = Object.getOwnPropertyNames(shader.inputs)
 
-
-
         shaderInputNames.forEach(inputName => {
+
+            if (inputName == "camera") {
+                const cameraInputName = shader.inputs[inputName].binding;
+                const camera = hbm_get_main_camera();
+                const cameraMatrix = camera.getViewProjectionMatrix()
+
+                const cameraLocation = gl.getUniformLocation(program, cameraInputName);
+                
+                gl.uniformMatrix4fv(
+                    cameraLocation,
+                    false,
+                    cameraMatrix
+                )
+                return;
+            }
 
             // check if the mesh have corresponding input data
             const vertexData = mesh.vertexData[inputName];

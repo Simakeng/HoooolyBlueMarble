@@ -26,6 +26,9 @@ HBM_SHADERS[HBM_SKYBOX_VS] = {
         texture: {
             binding: "a_TexturePosition"
         },
+        camera: {
+            binding: "uMatrix"
+        }
     }
 };
 
