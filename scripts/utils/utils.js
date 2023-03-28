@@ -125,7 +125,7 @@ function hbm_mesh_bind_to_program(gl, mesh, program, shaders) {
                 
                 gl.uniformMatrix4fv(
                     cameraLocation,
-                    false,
+                    true,
                     cameraMatrix
                 )
                 return;

@@ -60,19 +60,14 @@ class HBMCamera {
 
         const aspect = sensorW / sensorH;
 
-        const verticalFov = 2 * Math.atan2(sensorH / 2, this.#focalLength);
+        const scaleY = sensorH / 2 / this.#focalLength;
+        const scaleX = sensorW / 2 / this.#focalLength;
 
-        const projectionMatrix = glMatrix.mat4.create(); 
+        const projectionMatrix = lmath.perspectiveLH(scaleY, scaleX, this.#znear, this.#zfar);
 
-        glMatrix.mat4.perspective(projectionMatrix,
-            verticalFov, // vertical field-of-view in radians
-            aspect, this.#znear, this.#zfar);
+        const viewMatrix = lmath.cameraViewMatrix(this.#pos, this.#look, this.#up);
 
-        const viewMatrix = glMatrix.mat4.create();
-        glMatrix.mat4.lookAt(viewMatrix, this.#pos, this.#look, this.#up);
-
-        const viewProjectionMatrix = glMatrix.mat4.create();
-        glMatrix.mat4.multiply(viewProjectionMatrix, projectionMatrix, viewMatrix);
+        const viewProjectionMatrix = lmath.mat4mul(projectionMatrix, viewMatrix);
         return viewProjectionMatrix;
     }
 }

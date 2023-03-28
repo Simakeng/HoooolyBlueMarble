@@ -30,6 +30,7 @@ const HOOOLY_BLUE_MARBLE_SCRIPTS = [
   "scripts/core/render-target.js",
   "scripts/core/render.js",
   "scripts/utils/utils.js",
+  "scripts/utils/lmath.js",
   "scripts/core/init.js",
 ];
 
