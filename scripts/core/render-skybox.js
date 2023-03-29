@@ -46,23 +46,96 @@ function hbm_create_skybox_mesh() {
         -1.0, -1.0, 1.0,
         1.0, 1.0, 1.0,
         1.0, -1.0, 1.0,
+
+        -1.0, 1.0, 1.0,
+        -1.0, -1.0, 1.0,
+        -1.0, 1.0, -1.0,
+        -1.0, 1.0, -1.0,
+        -1.0, -1.0, 1.0,
+        -1.0, -1.0, -1.0,
+
+        -1.0, 1.0, -1.0,
+        -1.0, -1.0, -1.0,
+        1.0, 1.0, -1.0,
+        1.0, 1.0, -1.0,
+        -1.0, -1.0, -1.0,
+        1.0, -1.0, -1.0,
+
+        1.0, 1.0, 1.0,
+        -1.0, 1.0, 1.0,
+        1.0, 1.0, -1.0,
+        1.0, 1.0, -1.0,
+        -1.0, 1.0, 1.0,
+        -1.0, 1.0, -1.0,
+
+        1.0, -1.0, 1.0,
+        1.0, 1.0, 1.0,
+        1.0, -1.0, -1.0,
+        1.0, -1.0, -1.0,
+        1.0, 1.0, 1.0,
+        1.0, 1.0, -1.0,
+
+        1.0, -1.0, 1.0,
+        1.0, -1.0, -1.0,
+        -1.0, -1.0, 1.0,
+        -1.0, -1.0, 1.0,
+        1.0, -1.0, -1.0,
+        -1.0, -1.0, -1.0,
+
     ]
 
+    const wp = 1.0 / 3;
+    const hp = 0.5;
+    const eps = 1e-5;
     let texturePositions = [
-        0.0, 0.0,
-        1.0, 0.0,
-        0.0, 1.0,
-        0.0, 1.0,
-        1.0, 0.0,
-        1.0, 1.0,
-    ]
+        2 * wp, 1 * hp,
+        3 * wp, 1 * hp,
+        2 * wp, 2 * hp,
+        2 * wp, 2 * hp,
+        3 * wp, 1 * hp,
+        3 * wp, 2 * hp,
 
+        2 * wp, 1 * hp,
+        2 * wp, 2 * hp,
+        1 * wp, 1 * hp,
+        1 * wp, 1 * hp,
+        2 * wp, 2 * hp,
+        1 * wp, 2 * hp,
+
+        1 * wp, 1 * hp,
+        1 * wp, 2 * hp,
+        0 * wp, 1 * hp,
+        0 * wp, 1 * hp,
+        1 * wp, 2 * hp,
+        0 * wp, 2 * hp,
+
+        2 * wp, 0 * hp,
+        3 * wp, 0 * hp,
+        2 * wp, 1 * hp,
+        2 * wp, 1 * hp,
+        3 * wp, 0 * hp,
+        3 * wp, 1 * hp,
+
+        1 * wp, 0 * hp,
+        2 * wp, 0 * hp,
+        1 * wp, 1 * hp,
+        1 * wp, 1 * hp,
+        2 * wp, 0 * hp,
+        2 * wp, 1 * hp,
+
+        1 * wp, 0 * hp,
+        1 * wp, 1 * hp,
+        0 * wp, 0 * hp,
+        0 * wp, 0 * hp,
+        1 * wp, 1 * hp,
+        0 * wp, 1 * hp,
+    ];
     mesh.vertexData.position =
         hbm_gl_create_static_array_buffer(gl, vertexPositions, 3);
     mesh.vertexData.texture =
         hbm_gl_create_static_array_buffer(gl, texturePositions, 2);
     mesh.textures.diffuse =
-        hbm_gl_create_static_texture2d(gl, "/assets/textures/skybox/skybox_universe_Zp@2048x2048.png")
-    mesh.vertexData.count = 6;
+        hbm_gl_create_static_texture2d(gl, "/assets/textures/skybox.png")
+    mesh.vertexData.count = 36;
     return mesh;
 }

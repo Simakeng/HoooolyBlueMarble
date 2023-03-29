@@ -20,7 +20,7 @@ class HBMCamera {
     #sensorHeight = 0.024; // 24mm
 
     //TODO: implement dof with apture size and focal length.
-    #aptureSize = 0.05; // 50mm
+    #aptureSize = 0.035; // 35mm
 
     #focalLength = 0.005;
 
@@ -65,7 +65,7 @@ class HBMCamera {
 
         const projectionMatrix = lmath.perspectiveLH(scaleY, scaleX, this.#znear, this.#zfar);
 
-        const viewMatrix = lmath.cameraViewMatrix(this.#pos, this.#look, this.#up);
+        const viewMatrix = lmath.cameraViewMatrixLH(this.#pos, this.#look, this.#up);
 
         const viewProjectionMatrix = lmath.mat4mul(projectionMatrix, viewMatrix);
         return viewProjectionMatrix;
@@ -97,7 +97,6 @@ class HBMCamera {
                 case "mousedown":
                     lastPos = pos;
                     dragStarted = true;
-                    console.log("start drag");
                     break;
                 case "mousemove":
                     if (!dragStarted) return;
@@ -109,9 +108,6 @@ class HBMCamera {
                     const deltaX = deltaXpx / squareSizeScale
                     const deltaY = deltaYpx / squareSizeScale;
 
-                    const matRotateX = glMatrix.mat4.create()
-                    const matRotateY = glMatrix.mat4.create()
-
                     const up = glMatrix.vec3.create();
                     const look = glMatrix.vec3.create();
                     const right = glMatrix.vec3.create();
@@ -120,21 +116,21 @@ class HBMCamera {
                     glMatrix.vec3.normalize(look, camera.#look);
                     glMatrix.vec3.cross(right, up, look);
 
+                    const vertical = glMatrix.vec3.fromValues(0, 1, 0);
 
-                    glMatrix.mat4.fromRotation(matRotateX, deltaX, up);
-                    glMatrix.mat4.fromRotation(matRotateY, deltaY, right);
+                    const matRotateX = lmath.mat4fromRotation(deltaX, vertical);
+                    const matRotateY = lmath.mat4fromRotation(deltaY, right);
 
-                    const matRot = lmath.mat4mul(matRotateX, matRotateY);
+                    const matRot = lmath.mat4mul(matRotateY, matRotateX);
 
-                    camera.#up = lmath.mat4apply(matRot, camera.#up);
-                    camera.#look = lmath.mat4apply(matRot, camera.#look);
+                    camera.#up = lmath.mat4apply(matRot, up);
+                    camera.#look = lmath.mat4apply(matRot, look);
 
                     lastPos = pos;
                     
                     break;
                 case "mouseup":
                     dragStarted = false;
-                    console.log("end drag");
                     break;
                 default:
                     return;

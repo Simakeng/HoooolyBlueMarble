@@ -16,7 +16,7 @@ function hbm_get_gl() {
 
 function hbm_gl_clear_render_target() {
     let gl = glEnv;
-    gl.clearColor(0.0, 1.0, 0.0, 1.0);
+    gl.clearColor(0.0, 0.08, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 }
 

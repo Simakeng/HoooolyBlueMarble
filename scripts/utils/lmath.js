@@ -7,8 +7,14 @@ const lmath = {
             0, 0, 1, 0
         ])
     },
-
-    cameraViewMatrix(pos, look, up) {
+    dot(vecA, vecB) {
+        let sum = 0;
+        for (let i = 0; i < vecA.length; i++) {
+            sum += vecA[i] * vecB[i];
+        }
+        return sum;
+    },
+    cameraViewMatrixLH(pos, look, up) {
         const matMove = new Float32Array([
             1, 0, 0, -pos[0],
             0, 1, 0, -pos[1],
@@ -18,13 +24,14 @@ const lmath = {
         const right = glMatrix.vec3.create();
         glMatrix.vec3.normalize(look, look);
         glMatrix.vec3.normalize(up, up);
-        glMatrix.vec3.cross(right, look, up);
+        glMatrix.vec3.cross(right, up, look);
+        right[1] = 0.0; // not allow camera to rotate around x axis
         glMatrix.vec3.normalize(right, right);
 
         const matView = new Float32Array([
-            right[0], up[0], look[0], 0,
-            right[1], up[1], look[1], 0,
-            right[2], up[2], look[2], 0,
+            right[0], right[1], right[2], 0,
+            up[0], up[1], up[2], 0,
+            look[0], look[1], look[2], 0,
             0, 0, 0, 1
         ]);
 
@@ -52,7 +59,7 @@ const lmath = {
             if (i < vecB.length)
                 vecB4[i] = vecB[i];
             else
-                vecB4[i] = 1;
+                vecB4[i] = 0;
         }
         const vecC = new Float32Array(4);
         for (let i = 0; i < 4; i++) {
@@ -62,6 +69,28 @@ const lmath = {
             }
             vecC[i] = sum;
         }
-        return vecC;
+        const resultVec = new Float32Array(vecB.length);
+        for (let i = 0; i < vecB.length; i++) {
+            resultVec[i] = vecC[i];
+        }
+        return resultVec;
+    },
+
+    mat4fromRotation(rad, axis) {
+        const c = Math.cos(rad);
+        const s = Math.sin(rad);
+        const t = 1 - c;
+        const x = axis[0];
+        const y = axis[1];
+        const z = axis[2];
+
+        const mat = new Float32Array([
+            t * x * x + c, t * x * y - s * z, t * x * z + s * y, 0,
+            t * x * y + s * z, t * y * y + c, t * y * z - s * x, 0,
+            t * x * z - s * y, t * y * z + s * x, t * z * z + c, 0,
+            0, 0, 0, 1
+        ]);
+
+        return mat;
     }
 }
