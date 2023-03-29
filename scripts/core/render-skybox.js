@@ -86,7 +86,6 @@ function hbm_create_skybox_mesh() {
 
     const wp = 1.0 / 3;
     const hp = 0.5;
-    const eps = 1e-5;
     let texturePositions = [
         2 * wp, 1 * hp,
         3 * wp, 1 * hp,
