@@ -17,3 +17,5 @@ If you have a powerful computer, you may can try 64K res version.
 https://svs.gsfc.nasa.gov/vis/a000000/a004800/a004851/starmap_2020_64k.exr
 
 Skybox texture output resolution setting in C4D is 2028x2048, you can change that as your need.
+
+After downloading, put the file [starmap_2020_16k.exr] into the folder [assets\pga\skybox_universe\tex\starmap_2020_16k.exr], then you are ready to launch Cinema4D.

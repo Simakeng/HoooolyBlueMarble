@@ -16,7 +16,7 @@ function hbm_get_gl() {
 
 function hbm_gl_clear_render_target() {
     let gl = glEnv;
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearColor(0.0, 1.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 }
 
@@ -28,15 +28,16 @@ function hbm_init_render_loop(canvas) {
         debug("Unable to initialize WebGL. Your browser, operating system, or hardware may not support WebGL.");
         return;
     }
+    let skybox = new HBMSkyBox();
+
     function render_dummy() {
+        hbm_gl_clear_render_target();
         skybox.render();
         requestAnimationFrame(render_dummy);
-     }
-    hbm_gl_clear_render_target();
-    let skybox = new HBMSkyBox();
+    }
+
     setTimeout(() => {
         render_dummy();
-        
     }, 100); 
 }
 

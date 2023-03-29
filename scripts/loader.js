@@ -28,6 +28,7 @@ const HOOOLY_BLUE_MARBLE_SCRIPTS = [
   "scripts/core/render-camera.js",
   "scripts/core/render-skybox.js",
   "scripts/core/render-target.js",
+  "scripts/core/input-manager.js",
   "scripts/core/render.js",
   "scripts/utils/utils.js",
   "scripts/utils/lmath.js",

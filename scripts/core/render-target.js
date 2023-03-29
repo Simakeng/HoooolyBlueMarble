@@ -14,7 +14,7 @@
 
 const HBM_RT_CANVAS_ID = "render-target-canvas";
 
-function register_window_resize_event() {
+function hbm_register_window_resize_event() {
 
     let timeoutId = 0;
     let resizePending = false;
@@ -46,7 +46,7 @@ function hbm_resize_target_canvas() {
         "x" + renderTargetHeight + "");
 }
 
-function create_render_target_canvas() {
+function hbm_create_render_target_canvas() {
     let container = document.getElementById("container");
 
     if (container == null) {
@@ -55,7 +55,7 @@ function create_render_target_canvas() {
     }
 
     let canvas = document.createElement("canvas");
-    canvas.id = "render-target-canvas";
+    canvas.id = HBM_RT_CANVAS_ID;
     //   canvas.style.width = "100%";
     //   canvas.style.height = "100%";
     canvas.style.display = "block";
@@ -64,9 +64,55 @@ function create_render_target_canvas() {
     container.innerHTML = "";
     container.appendChild(canvas);
 
-    register_window_resize_event();
+    hbm_register_window_resize_event();
 
     hbm_resize_target_canvas();
 
     return canvas;
+}
+
+
+function hbm_canvas_get_rect() {
+    const canvas = document.getElementById(HBM_RT_CANVAS_ID);
+    const rect = canvas.getBoundingClientRect();
+    return rect;
+}
+
+function hbm_is_abs_point_in_rect(point) {
+    const rect = hbm_canvas_get_rect();
+    if (point.x < rect.left ||
+        point.x > rect.right ||
+        point.y < rect.top ||
+        point.y > rect.bottom) {
+        return false;
+    }
+    return true;
+}
+
+
+function hbm_is_rel_point_in_rect(point) {
+    const rect = hbm_canvas_get_rect();
+    if (point.x < 0 ||
+        point.x > rect.width ||
+        point.y < 0 ||
+        point.y > rect.height) {
+        return false;
+    }
+    return true;
+}
+
+function hbm_canvas_translate_abs_to_rel_pos(pos) {
+    const rect = hbm_canvas_get_rect();
+    return {
+        x: pos.x - rect.left,
+        y: pos.y - rect.top
+    };
+}
+
+function hbm_canvas_get_size() {
+    const rect = hbm_canvas_get_rect();
+    return {
+        width: rect.width,
+        height: rect.height
+    };
 }

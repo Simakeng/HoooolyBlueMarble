@@ -3,6 +3,10 @@
 # add for SVS Deep Star Maps 2020
 *.exr
 *.tif
+assets/pga/skybox_universe/log/*.xml
+assets/textures/skybox/*.png
+assets/textures/skybox_dbg/*.png
+
 
 .*
 !.gitignore

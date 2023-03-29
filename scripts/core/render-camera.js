@@ -70,6 +70,79 @@ class HBMCamera {
         const viewProjectionMatrix = lmath.mat4mul(projectionMatrix, viewMatrix);
         return viewProjectionMatrix;
     }
+
+    resgister_input_drag() {
+        let dragStarted = false;
+        let lastPos = {
+            x: 0,
+            y: 0
+        }
+
+        const camera = this;
+
+        function camera_drag_callback(event) {
+            switch (event.type) {
+                case "mousedown":
+                case "mousemove":
+                case "mouseup":
+                    break;
+                default:
+                    return;
+            }
+
+            const abs_pos = hbm_input_get_pos(event);
+            const pos = hbm_canvas_translate_abs_to_rel_pos(abs_pos);
+
+            switch (event.type) {
+                case "mousedown":
+                    lastPos = pos;
+                    dragStarted = true;
+                    console.log("start drag");
+                    break;
+                case "mousemove":
+                    if (!dragStarted) return;
+
+                    const deltaXpx = -(pos.x - lastPos.x);
+                    const deltaYpx = -(pos.y - lastPos.y);
+                    const canvasSize = hbm_canvas_get_size();
+                    const squareSizeScale = Math.min(canvasSize.width, canvasSize.height);
+                    const deltaX = deltaXpx / squareSizeScale
+                    const deltaY = deltaYpx / squareSizeScale;
+
+                    const matRotateX = glMatrix.mat4.create()
+                    const matRotateY = glMatrix.mat4.create()
+
+                    const up = glMatrix.vec3.create();
+                    const look = glMatrix.vec3.create();
+                    const right = glMatrix.vec3.create();
+
+                    glMatrix.vec3.normalize(up, camera.#up);
+                    glMatrix.vec3.normalize(look, camera.#look);
+                    glMatrix.vec3.cross(right, up, look);
+
+
+                    glMatrix.mat4.fromRotation(matRotateX, deltaX, up);
+                    glMatrix.mat4.fromRotation(matRotateY, deltaY, right);
+
+                    const matRot = lmath.mat4mul(matRotateX, matRotateY);
+
+                    camera.#up = lmath.mat4apply(matRot, camera.#up);
+                    camera.#look = lmath.mat4apply(matRot, camera.#look);
+
+                    lastPos = pos;
+                    
+                    break;
+                case "mouseup":
+                    dragStarted = false;
+                    console.log("end drag");
+                    break;
+                default:
+                    return;
+            }
+        }
+
+        hbm_register_input_event_handler(camera_drag_callback);
+    }
 }
 
 // const projectionMatrix = new Float32Array(
@@ -86,6 +159,11 @@ let HBM_MAIN_CAMERA = null;
 
 function hbm_get_main_camera() {
     if (!HBM_MAIN_CAMERA)
-        HBM_MAIN_CAMERA = new HBMCamera();
+        hbm_init_main_camera();
     return HBM_MAIN_CAMERA;
+}
+
+function hbm_init_main_camera() {
+    if (!HBM_MAIN_CAMERA)
+        HBM_MAIN_CAMERA = new HBMCamera();
 }

@@ -9,7 +9,7 @@
 
 class HBMSkyBox {
     constructor() {
-        let gl = hbm_get_gl();
+        const gl = hbm_get_gl();
         this.vs = hbm_get_shader(HBM_SKYBOX_VS);
         this.fs = hbm_get_shader(HBM_SKYBOX_FS);
 
@@ -19,12 +19,9 @@ class HBMSkyBox {
     }
 
     render() {
-        let gl = hbm_get_gl();
-        gl.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
-        gl.clear(gl.COLOR_BUFFER_BIT);
+        const gl = hbm_get_gl();
 
         hbm_mesh_bind_to_program(gl, this.mesh, this.program, [this.vs, this.fs])
-
         gl.useProgram(this.program);
 
         const offset = 0;
@@ -43,12 +40,12 @@ function hbm_create_skybox_mesh() {
     const z = 1;
     //   x     y     z
     let vertexPositions = [
-        -1.0, 1.0, z,
-        1.0, 1.0, z,
-        -1.0, -1.0, z,
-        -1.0, -1.0, z,
-        1.0, 1.0, z,
-        1.0, -1.0, z,
+        -1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0,
+        -1.0, -1.0, 1.0,
+        -1.0, -1.0, 1.0,
+        1.0, 1.0, 1.0,
+        1.0, -1.0, 1.0,
     ]
 
     let texturePositions = [
@@ -64,8 +61,8 @@ function hbm_create_skybox_mesh() {
         hbm_gl_create_static_array_buffer(gl, vertexPositions, 3);
     mesh.vertexData.texture =
         hbm_gl_create_static_array_buffer(gl, texturePositions, 2);
-    mesh.textures.diffuse = 
-        hbm_gl_create_static_texture2d(gl, "/assets/textures/skybox/skybox_b.jpg")
-    mesh.vertexData.count = 3;
+    mesh.textures.diffuse =
+        hbm_gl_create_static_texture2d(gl, "/assets/textures/skybox/skybox_universe_Zp@2048x2048.png")
+    mesh.vertexData.count = 6;
     return mesh;
 }
